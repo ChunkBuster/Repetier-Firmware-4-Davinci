@@ -22,17 +22,17 @@
 // ################## EDIT THESE SETTINGS MANUALLY ################
 
 #define DAVINCI 3// "0" if not DAVINCI, "1" For DAVINCI 1.0, "2" For DAVINCI 2.0 with 1 FAN, "3" For DAVINCI 2.0 with 2 FAN, 4 for AiO (WITH NO SCANNER SUPPORT)
-#define MODEL  1//"0" for first generation (jumper JP1 to reset ) , "1" for new generation   (jumper J37 to reset)
-#define REPURPOSE_FAN_TO_COOL_EXTRUSIONS 1 //Setting this to 1 will repurpose the main Extruder cooling fan to be controlled VIA M106/M107
+#define MODEL 1//"0" for first generation (jumper JP1 to reset ) , "1" for new generation   (jumper J37 to reset)
+#define REPURPOSE_FAN_TO_COOL_EXTRUSIONS 1//Setting this to 1 will repurpose the main Extruder cooling fan to be controlled VIA M106/M107
                                            //Warning: for DaVinci 1.0 need to add a permanent fan with power supply to cool extruder
 
 // ################ END MANUAL SETTINGS ##########################
 
 //Version
 #define VERSION_MAJOR "1"
-#define VERSION_MINOR_YEAR "17"
+#define VERSION_MINOR_YEAR "16"
 #define VERSION_MINOR_MONTH "08"
-#define VERSION_MINOR_DAY "01"
+#define VERSION_MINOR_DAY "29"
 #define VERSION_BUILD "1"
 
 //Davinci screen is not standard reprap it is WINSTAR 16x4
@@ -94,9 +94,9 @@
   #endif
 #endif
 #define CASE_KEEP_LIGHT_DEFAULT_ON 1
-#define CASE_FILAMENT_SENSOR_DEFAULT_ON 1
-#define CASE_TOP_SENSOR_DEFAULT_ON 1
-#define CASE_SOUND_DEFAULT_ON 0
+#define CASE_FILAMENT_SENSOR_DEFAULT_ON 0
+#define CASE_TOP_SENSOR_DEFAULT_ON 0
+#define CASE_SOUND_DEFAULT_ON 1
 #define CASE_WIFI_DEFAULT_ON 0
 //default mode is advanced
 #define CASE_DISPLAY_MODE_DEFAULT 1
@@ -333,7 +333,7 @@ controlled by settings in extruder 0 definition. */
 /* Speed in mm/s for extruder moves fom internal commands, e.g. switching extruder. */
 #define EXTRUDER_SWITCH_XY_SPEED 100
 
-#define EXT0_X_OFFSET 0//1607 / 2
+#define EXT0_X_OFFSET 0
 #define EXT0_Y_OFFSET 0
 #define EXT0_Z_OFFSET 0
 // for skeinforge 40 and later, steps to pull the plastic 1 mm inside the extruder, not out.  Overridden if EEPROM activated.
@@ -362,7 +362,7 @@ controlled by settings in extruder 0 definition. */
 // 100 is AD595
 // 101 is MAX6675
 // 102 is MAX31855
-#define EXT0_TEMPSENSOR_TYPE 8
+#define EXT0_TEMPSENSOR_TYPE 5
 // Analog input pin for reading temperatures or pin enabling SS for MAX6675
 #define EXT0_TEMPSENSOR_PIN TEMP_0_PIN
 // Which pin enables the heater
@@ -371,13 +371,13 @@ controlled by settings in extruder 0 definition. */
 #define EXT0_DIR_PIN E0_DIR_PIN
 // set to false/true for normal / inverse direction
 #if DAVINCI==0
-#define EXT0_INVERSE true
+#define EXT0_INVERSE false
 #endif
 #if DAVINCI==1 || DAVINCI==4
 #define EXT0_INVERSE false
 #endif
 #if DAVINCI==2 || DAVINCI==3
-#define EXT0_INVERSE true
+#define EXT0_INVERSE false
 #endif
 #define EXT0_ENABLE_PIN E0_ENABLE_PIN
 /* Set to 1 to mirror motor. Pins for mirrored motor are below */
@@ -480,9 +480,8 @@ The codes are only executed for multiple extruder when changing the extruder. */
 
 
 // =========================== Configuration for second extruder ========================
-//35.5mm apart = -2852
-#define EXT1_X_OFFSET -1607 / 2
-#define EXT1_Y_OFFSET 12
+#define EXT1_X_OFFSET -18
+#define EXT1_Y_OFFSET 0
 #define EXT1_Z_OFFSET 0
 // for skeinforge 40 and later, steps to pull the plasic 1 mm inside the extruder, not out.  Overridden if EEPROM activated.
 #define EXT1_STEPS_PER_MM 99
@@ -505,7 +504,7 @@ The codes are only executed for multiple extruder when changing the extruder. */
 // 99 Generic thermistor table 3
 // 100 is AD595
 // 101 is MAX6675
-#define EXT1_TEMPSENSOR_TYPE 8
+#define EXT1_TEMPSENSOR_TYPE 5
 // Analog input pin for reading temperatures or pin enabling SS for MAX6675
 #define EXT1_TEMPSENSOR_PIN TEMP_2_PIN
 // Which pin enables the heater
@@ -513,7 +512,7 @@ The codes are only executed for multiple extruder when changing the extruder. */
 #define EXT1_STEP_PIN E1_STEP_PIN
 #define EXT1_DIR_PIN E1_DIR_PIN
 // set to false/true for normal/inverse direction
-#define EXT1_INVERSE false
+#define EXT1_INVERSE true
 #define EXT1_ENABLE_PIN E1_ENABLE_PIN
 // For Inverting Stepper Enable Pins (Active Low) use 0, Non Inverting (Active High) use 1
 #define EXT1_ENABLE_ON false
@@ -878,10 +877,10 @@ A good start is 30 lower then the optimal value. You need to leave room for cool
 
 // When temperature exceeds max temp, your heater will be switched off.
 // This feature exists to protect your hotend from overheating accidentally, but *NOT* from thermistor short/failure!
-#define MAXTEMP 280
+#define MAXTEMP 270
 
 /** Extreme values to detect defect thermistors. */
-#define MIN_DEFECT_TEMPERATURE -15
+#define MIN_DEFECT_TEMPERATURE -10
 #define MAX_DEFECT_TEMPERATURE 290
 
 // ##########################################################################################
@@ -1049,7 +1048,7 @@ on this endstop.
 #if DAVINCI==2 || DAVINCI==3
 #define ENDSTOP_X_BACK_ON_HOME 0
 //to avoid to hit plate when homing
-#define ENDSTOP_Y_BACK_ON_HOME 7
+#define ENDSTOP_Y_BACK_ON_HOME 1
 #define ENDSTOP_Z_BACK_ON_HOME 0
 #endif
 
@@ -1101,7 +1100,7 @@ on this endstop.
 #endif
 
 #if DAVINCI==2 || DAVINCI==3
-#define X_MIN_POS 0
+#define X_MIN_POS -35
 #define Y_MIN_POS 0
 #define Z_MIN_POS 0
 #endif
@@ -1383,7 +1382,7 @@ Corner can be printed with full speed of 50 mm/s
 
 Overridden if EEPROM activated.
 */
-#define MAX_JERK 10.0
+#define MAX_JERK 20.0
 #define MAX_ZJERK 0.3
 
 /** \brief Number of moves we can cache in advance.
@@ -1983,7 +1982,7 @@ computations, so do not enable it if your display works stable!
 #define DAVINCI_TYPE "2"
 #endif
 #if DAVINCI==3
-#define UI_PRINTER_NAME    "Meme Machine"//"  Da Vinci 2.0"
+#define UI_PRINTER_NAME    "Da Vinci Chimera"
 #define DAVINCI_TYPE "3"
 #endif
 #if DAVINCI==4
@@ -2046,7 +2045,7 @@ same setting.
 /** \brief Lowest repeat time. */
 #define UI_KEY_MIN_REPEAT 50
 
-#define FEATURE_BEEPER 0
+#define FEATURE_BEEPER 1
 /**
 Beeper sound definitions for short beeps during key actions
 and longer beeps for important actions.

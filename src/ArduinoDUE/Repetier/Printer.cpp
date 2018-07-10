@@ -224,7 +224,7 @@ void Printer::cleanNozzle(bool restoreposition, int8_t extT)
     if (currentPosition[Z_AXIS] < zMin+15) moveToReal(IGNORE_COORDINATE,IGNORE_COORDINATE,zMin+15,IGNORE_COORDINATE,homingFeedrate[0]);
     Commands::waitUntilEndOfAllMoves();
     UI_STATUS_F(Com::translatedF(UI_TEXT_CLEANING_NOZZLE_ID));
-#if DAVINCI ==1
+#if DAVINCI ==1 
     //first step noze
     moveToReal(xMin+CLEAN_X-ENDSTOP_X_BACK_ON_HOME,yMin,IGNORE_COORDINATE,IGNORE_COORDINATE,homingFeedrate[0]);
     //second step noze
@@ -264,7 +264,7 @@ void Printer::cleanNozzle(bool restoreposition, int8_t extT)
     //fifth step
     moveToReal(xMin,yMin+CLEAN_Y+2,IGNORE_COORDINATE,IGNORE_COORDINATE,homingFeedrate[0]);
 #endif
-#if DAVINCI ==2 || DAVINCI ==3
+#if DAVINCI ==2 || DAVINCI ==3 
     if(extT == 1 || extT == -1)
         {
         //first step
@@ -275,27 +275,27 @@ void Printer::cleanNozzle(bool restoreposition, int8_t extT)
         moveToReal(xMin+CLEAN_X-ENDSTOP_X_BACK_ON_HOME,yMin+CLEAN_Y-ENDSTOP_Y_BACK_ON_HOME,IGNORE_COORDINATE,IGNORE_COORDINATE,homingFeedrate[0]);
         //fourth step
         moveToReal(xMin-ENDSTOP_X_BACK_ON_HOME,yMin-ENDSTOP_Y_BACK_ON_HOME,IGNORE_COORDINATE,IGNORE_COORDINATE,homingFeedrate[0]);
+        //Fifth step
+        moveToReal(xMin+CLEAN_X-ENDSTOP_X_BACK_ON_HOME,yMin+CLEAN_Y-ENDSTOP_Y_BACK_ON_HOME,IGNORE_COORDINATE,IGNORE_COORDINATE,homingFeedrate[0]);
+        //Sixth step
+        moveToReal(xMin-ENDSTOP_X_BACK_ON_HOME,yMin-ENDSTOP_Y_BACK_ON_HOME,IGNORE_COORDINATE,IGNORE_COORDINATE,homingFeedrate[0]);
         //move out to be sure first drop go to purge box
         Commands::waitUntilEndOfAllMoves();
         }
     if(extT == 0 || extT == -1)
         {
-        moveToReal(xLength,yMin+10,IGNORE_COORDINATE,IGNORE_COORDINATE,homingFeedrate[0]);
-        moveToReal(IGNORE_COORDINATE,yMin-ENDSTOP_Y_BACK_ON_HOME,IGNORE_COORDINATE,IGNORE_COORDINATE,homingFeedrate[0]);
-        //first step
-        moveToReal(xLength-15,IGNORE_COORDINATE,IGNORE_COORDINATE,IGNORE_COORDINATE,homingFeedrate[0]);
-        //second step
-        moveToReal(xLength-3,yMin+10,IGNORE_COORDINATE,IGNORE_COORDINATE,homingFeedrate[0]);
-        //third step
-        moveToReal(xLength,yMin-ENDSTOP_Y_BACK_ON_HOME,IGNORE_COORDINATE,IGNORE_COORDINATE,homingFeedrate[0]);
-        //fourth step	
-        moveToReal(xLength-15,IGNORE_COORDINATE,IGNORE_COORDINATE,IGNORE_COORDINATE,homingFeedrate[0]);
-        //fifth step
-        moveToReal(xLength-3,yMin+10,IGNORE_COORDINATE,IGNORE_COORDINATE,homingFeedrate[0]);
-        //sixth step
-        moveToReal(xLength,yMin-ENDSTOP_Y_BACK_ON_HOME,IGNORE_COORDINATE,IGNORE_COORDINATE,homingFeedrate[0]);
-        //seventh step
-        moveToReal(xLength-15,IGNORE_COORDINATE,IGNORE_COORDINATE,IGNORE_COORDINATE,homingFeedrate[0]);
+        //First step
+        moveToReal(xMin+18,yMin + CLEAN_Y-ENDSTOP_Y_BACK_ON_HOME,IGNORE_COORDINATE,IGNORE_COORDINATE,homingFeedrate[0]);
+        //Second step
+        moveToReal(xMin+18,yMin-ENDSTOP_Y_BACK_ON_HOME,IGNORE_COORDINATE,IGNORE_COORDINATE,homingFeedrate[0]);
+        //Third step	
+        moveToReal(xMin+18,yMin+CLEAN_Y-ENDSTOP_Y_BACK_ON_HOME,IGNORE_COORDINATE,IGNORE_COORDINATE,homingFeedrate[0]);
+        //fourth step
+        moveToReal(xMin+18,yMin-ENDSTOP_Y_BACK_ON_HOME,IGNORE_COORDINATE,IGNORE_COORDINATE,homingFeedrate[0]);
+        //Fifth step
+        moveToReal(xMin+18,yMin+CLEAN_Y-ENDSTOP_Y_BACK_ON_HOME,IGNORE_COORDINATE,IGNORE_COORDINATE,homingFeedrate[0]);
+        //Sixth step
+        moveToReal(xMin+18,yMin-ENDSTOP_Y_BACK_ON_HOME,IGNORE_COORDINATE,IGNORE_COORDINATE,homingFeedrate[0]);
         }
         
         Commands::waitUntilEndOfAllMoves();
@@ -488,38 +488,41 @@ void Printer::toggleNoMoves() {
 void Printer::toggleEndStop() {
   setDebugLevel(debugLevel ^ 64);
 }
-
-bool Printer::isPositionAllowed(float x, float y, float z) {
+	
+bool Printer::isPositionAllowed(float x,float y,float z)
+{
     if(isNoDestinationCheck()) return true;
     bool allowed = true;
 #if DRIVE_SYSTEM == DELTA
-    if(!isHoming()) {
-        allowed = allowed && (z >= 0) && (z <= zLength + 0.05 + ENDSTOP_Z_BACK_ON_HOME);
-        allowed = allowed && (x * x + y * y <= deltaMaxRadiusSquared);
-    }
-#else   // DRIVE_SYSTEM
-    if(!isHoming()) {
-        allowed = allowed && x >= xMin - 0.01;
-        allowed = allowed && x <= xMin + xLength + 0.01;
-        allowed = allowed && y >= yMin - 0.01;
-        allowed = allowed && y <= yMin + yLength + 0.01;
-        allowed = allowed && z >= zMin - 0.01;
-        allowed = allowed && z <= zMin + zLength + ENDSTOP_Z_BACK_ON_HOME + 0.01;
-    }
+	if(!isHoming()) {
+	    allowed = allowed && (z >= 0) && (z <= zLength + 0.05 + ENDSTOP_Z_BACK_ON_HOME);
+		allowed = allowed && (x * x + y * y <= deltaMaxRadiusSquared);
+	}
+#else	// DRIVE_SYSTEM
+	if(!isHoming()) {
+		allowed = allowed && x >= xMin;
+		allowed = allowed && x <= xMin + xLength;
+		allowed = allowed && y >= yMin;
+		allowed = allowed && y <= yMin + yLength;
+		allowed = allowed && z >= zMin;
+		allowed = allowed && z <= zMin + zLength + ENDSTOP_Z_BACK_ON_HOME;	
+	}
+#endif 
+#if DUAL_X_AXIS
+	// Prevent carriage hit by disallowing moves inside other parking direction.
+	if(Extruder::current->id == 0) {
+		if(x > xMin + xLength)
+			allowed = false;
+	} else {
+		if(x < xMin)
+			allowed = false;
+	}
 #endif
-    /*#if DUAL_X_AXIS
-        // Prevent carriage hit by disallowing moves inside other parking direction.
-        if(Extruder::current->id == 0) {
-            if(x > xMin + xLength + 0.01)
-                allowed = false;
-        } else {
-            if(x < xMin - 0.01)
-                allowed = false;
-        }
-    #endif*/
-    if(!allowed) {
+    if(!allowed)
+    {
+	Com::printFLN(PSTR("x3"));
         Printer::updateCurrentPosition(true);
-        Commands::printCurrentPosition();
+        Commands::printCurrentPosition(PSTR("isPositionAllowed "));
     }
     return allowed;
 }
@@ -1404,7 +1407,7 @@ PULLUP(Z2_MINMAX_PIN, HIGH);
         currentPositionSteps[i] = 0;
     }
     currentPosition[X_AXIS] = currentPosition[Y_AXIS]= currentPosition[Z_AXIS] =  0.0;
-    //Commands::printCurrentPosition();
+    //Commands::printCurrentPosition(PSTR("Printer::setup 0 "));
 #if DISTORTION_CORRECTION
     distortion.init();
 #endif // DISTORTION_CORRECTION
@@ -1419,7 +1422,7 @@ PULLUP(Z2_MINMAX_PIN, HIGH);
 	homeAxis(true,true,true);
 #endif
 	setAutoretract(EEPROM_BYTE(AUTORETRACT_ENABLED));
-	Commands::printCurrentPosition();
+	Commands::printCurrentPosition(PSTR("Printer::setup "));
 #endif // DRIVE_SYSTEM
 	Extruder::selectExtruderById(0);
 
@@ -1652,7 +1655,7 @@ LaserDriver::laserOn = false;
     updateCurrentPosition(true);
 	updateHomedAll();
     UI_CLEAR_STATUS
-    Commands::printCurrentPosition();
+    Commands::printCurrentPosition(PSTR("homeAxis "));
     setAutolevelActive(autoLevel);
 #if defined(SUPPORT_LASER) && SUPPORT_LASER
 	LaserDriver::laserOn = oldLaser;
@@ -2086,7 +2089,7 @@ void Printer::homeAxis(bool xaxis,bool yaxis,bool zaxis) // home non-delta print
 	updateHomedAll();
 	//Davinci Specific
     //UI_CLEAR_STATUS
-    Commands::printCurrentPosition();
+    Commands::printCurrentPosition(PSTR("homeAxis "));
 #if defined(SUPPORT_LASER) && SUPPORT_LASER
 	LaserDriver::laserOn = oldLaser;
 #endif
