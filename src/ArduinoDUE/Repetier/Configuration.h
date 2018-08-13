@@ -718,29 +718,22 @@ temperature*8.
 If you have a PTC thermistor instead of a NTC thermistor, keep the adc values increasing and use thermistor types 50-52 instead of 5-7!
 */
 /** Number of entries in the user thermistor table 0. Set to 0 to disable it. */
-#if MODEL==0
-#define NUM_TEMPS_USERTHERMISTOR0 33
-#define USER_THERMISTORTABLE0 {{96,2400},{99,2320},{113,2240},{132,2160},{155,2080},{180,2000},{211,1920},{247,1840},{293,1760},{350,1680},{421,1600},{508,1520},{611,1440},{732,1360},{871,1280},{1024,1200},{1192,1120},{1369,1040},{1552,960},{1737,880},{1900,800},{2070,720},{2219,640},{2361,560},{2478,480},{2565,400},{2628,320},{2673,240},{2710,160},{2746,80},{2783,0},{2824,-80},{2864,-160}}
-
-/** Number of entries in the user thermistor table 1. Set to 0 to disable it. */
-#define NUM_TEMPS_USERTHERMISTOR1 19
-#define USER_THERMISTORTABLE1 {{628,1280},{859,1200},{1113,1120},{1382,1040},{1660,960},{1938,880},{2211,800},{2473,720},{2718,640},{2945,560},{3148,480},{3328,400},{3482,320},{3613,240},{3722,160},{3815,80},{3895,0},{3972,-80},{4055,-160}}
-
-/** Number of entries in the user thermistor table 2. Set to 0 to disable it. */
-#define NUM_TEMPS_USERTHERMISTOR2 0
-#define USER_THERMISTORTABLE2  {}
-
-#else
-#define NUM_TEMPS_USERTHERMISTOR0 28
+/*#define NUM_TEMPS_USERTHERMISTOR0 28
 #define USER_THERMISTORTABLE0 {{294, 2560},{375, 2400},{461, 2272},{526, 2184},{601, 2104},{674, 2048},{811, 1928},{925, 1848},{1071, 1768},{1219, 1696},{1445, 1584},{1673, 1496},{1902, 1416},{2187, 1312},{2454, 1224},{2672, 1152},{3000, 1048},{3196, 968},{3439, 864},{3583, 784},{3736, 680},{3899, 536},{3960, 448},{4024, 336},{4067, 192},{4079, 156},{4100, 0},{4120, -160}}
+*/
+//#define NUM_TEMPS_USERTHERMISTOR0 36
+//#define USER_THERMISTORTABLE0 {{68, 2400},{79, 2320},{91, 2240},{105, 2160},{123, 2080},{144, 2000},{169, 1920},{199, 1840},{237, 1760},{281, 1680},{336, 1600},{403, 1520},{483, 1440},{580, 1360},{695, 1280},{831, 1200},{988, 1120},{1164, 1040},{1357, 960},{1561, 880},{1767, 800},{1966, 720},{2148, 640},{2306, 560},{2437, 480},{2441, 400},{2619, 320},{2676, 240},{2715, 160},{2742, 80},{2759, 0},{2769, -80},{2776, -160},{2780, -240},{2782, -320},{2783, -400}}
+#define NUM_TEMPS_USERTHERMISTOR0 33
+#define USER_THERMISTORTABLE0 {{9,2820},{101,2740},{116,2660},{133,2580},{153,2500},{178,2420},{207,2340},{242,2260},{284,2180},{336,2100},{398,2020},{474,1940},{567,1860},{679,1780},{814,1700},{977,1620},{1171,1540},{1397,1460},{1655,1380},{1940,1300},{2246,1220},{2558,1140},{2863,1060},{3144,980},{3389,900},{3591,820},{3749,740},{3867,660},{3950,580},{4006,500},{4042,420},{4064,340},{4077,260}}
 
 /** Number of entries in the user thermistor table 1. Set to 0 to disable it. */
 #define NUM_TEMPS_USERTHERMISTOR1 19
 #define USER_THERMISTORTABLE1 {{628,1280},{859,1200},{1113,1120},{1382,1040},{1660,960},{1938,880},{2211,800},{2473,720},{2718,640},{2945,560},{3148,480},{3328,400},{3482,320},{3613,240},{3722,160},{3815,80},{3895,0},{3972,-80},{4055,-160}}
 
 /** Number of entries in the user thermistor table 2. Set to 0 to disable it. */
-#define NUM_TEMPS_USERTHERMISTOR2 0
-#endif
+#define NUM_TEMPS_USERTHERMISTOR2 36
+#define USER_THERMISTORTABLE2 {{68, 2400},{79, 2320},{91, 2240},{105, 2160},{123, 2080},{144, 2000},{169, 1920},{199, 1840},{237, 1760},{281, 1680},{336, 1600},{403, 1520},{483, 1440},{580, 1360},{695, 1280},{831, 1200},{988, 1120},{1164, 1040},{1357, 960},{1561, 880},{1767, 800},{1966, 720},{2148, 640},{2306, 560},{2437, 480},{2441, 400},{2619, 320},{2676, 240},{2715, 160},{2742, 80},{2759, 0},{2769, -80},{2776, -160},{2780, -240},{2782, -320},{2783, -400}} 
+
 
 /** If defined, creates a thermistor table at startup.
 
@@ -784,7 +777,8 @@ Honeywell 100K Thermistor (135-104LAG-J01)  : R0 = 100000  T0 = 25  Beta = 3974
 You can use the beta from the datasheet or compute it yourself.
 See http://reprap.org/wiki/MeasuringThermistorBeta for more details.
 */
-#define GENERIC_THERM1_BETA 4036
+//#define GENERIC_THERM1_BETA 4036
+#define GENERIC_THERM1_BETA 4267
 /** Start temperature for generated thermistor table */
 #define GENERIC_THERM1_MIN_TEMP -20
 /** End Temperature for generated thermistor table */
@@ -880,7 +874,7 @@ A good start is 30 lower then the optimal value. You need to leave room for cool
 #define MAXTEMP 270
 
 /** Extreme values to detect defect thermistors. */
-#define MIN_DEFECT_TEMPERATURE -10
+#define MIN_DEFECT_TEMPERATURE -100
 #define MAX_DEFECT_TEMPERATURE 290
 
 // ##########################################################################################
@@ -1699,10 +1693,10 @@ motorized bed leveling */
 
 #if DAVINCI==2 || DAVINCI==3
 #define Z_PROBE_X1 36
-#define Z_PROBE_Y1 -7
+#define Z_PROBE_Y1 0
 #define Z_PROBE_X2 36
 #define Z_PROBE_Y2 203
-#define Z_PROBE_X3 171
+#define Z_PROBE_X3 150
 #define Z_PROBE_Y3 203
 //Manual bed leveling
 #define MANUAL_LEVEL_X1 100
